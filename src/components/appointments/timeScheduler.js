@@ -40,14 +40,15 @@ class TimeScheduler extends React.Component {
   }
 
   render() {
-    const {appointments} = this.props;
+    //const {appointments} = this.props;
     const mappedElements = this.props.appointments.map(appointment => {
       let activeTime = {
         backgroundColor: 'none'
       };
-      if(appointment.isActive){
-        activeTime['backgroundColor'] = '#E91E63';
-      }
+      appointment.isActive ?
+        activeTime['backgroundColor'] = '#E91E63':
+        activeTime['backgroundColor'] = 'none';
+
       return(
         <div key={appointment.id}>
           <ListItem
@@ -74,7 +75,7 @@ class TimeScheduler extends React.Component {
 
 function mapStateToProps(state, ownProps){
   return {
-    appointments: state.appointments.appointmentTimes
+    appointments: state.appointments.appointmentTimes || state.appointments
   };
 }
 

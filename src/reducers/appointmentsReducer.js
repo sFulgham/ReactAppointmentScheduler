@@ -15,7 +15,7 @@ const intialState = {
 
 export default function appointmentsReducer(state, action) {
   //console.log('hit reducer');
-  let filteredAppointments = [], mappedAppointments = [];
+  let filteredAppointments = [];
 
   if(typeof state === 'undefined'){ //Guard clause
     return intialState;
@@ -33,14 +33,18 @@ export default function appointmentsReducer(state, action) {
     case Action.getAppointmentsByIdSuccess:
       return Object.assign({}, state, filteredAppointments);
     case Action.updateAppointmentsSuccess:
-      state.appointmentTimes = state.appointmentTimes.map((appointment) => {
+      const newState = Object.assign({}, state);
+      newState.appointmentTimes = newState.appointmentTimes.map((appointment) => {
         if(appointment.id === action.appointments.id){
+          (action.appointments.name !== '' || action.appointments.phoneNumber !== '') ?
+            appointment.isActive = true :
+            appointment.isActive = false;
           return Object.assign({}, appointment, action.appointments);
         }
         //console.log('Mapped: ', state.appointmentTimes);
         return appointment;
       });
-      return Object.assign({}, state);
+      return Object.assign({}, state, newState);
     default:
       return state;
   }
