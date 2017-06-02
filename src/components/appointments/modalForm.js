@@ -18,21 +18,52 @@ const styles = {
 class AppointmentsModalForm extends React.Component {
   constructor(props, context){
     super(props, context);
+
     this.onChange = this.onChange.bind(this);
+
     this.state = {
-      value: 'Property Value'
+      id: 0,
+      name: '',
+      phoneNumber: ''
     };
   }
 
   componentDidMount(){
     console.log('Mounting Form');
-    this.props.actions.getAppointmentsById(this.props.appointmentId, this.props.appointments);
+    let self = this;
+    self.props.actions.getAppointmentsById(self.props.appointmentId, self.props.appointments);
+    setTimeout(function(){
+      self.init();
+    }, 650);
   }
 
-  onChange(evt){
-    this.setState({
-      value: evt.target.value
-    });
+  init(){
+    try {
+      this.setState({
+        id: this.props.appointment.id,
+        name: this.props.appointment.name,
+        phoneNumber: this.props.appointment.phoneNumber
+      });
+    } catch(ex){
+      console.log(ex);
+    }
+  }
+
+  onChange(evt, newValue){
+    console.log(newValue);
+    let self = this;
+    switch(evt.target.name){
+      case 'tf_Name':
+        self.setState({name: newValue}, function(){
+          self.props.actions.updateAppointments(self.state);
+        });
+        break;
+      case 'tf_PhoneNumber':
+        self.setState({phoneNumber: newValue}, function(){
+          self.props.actions.updateAppointments(self.state);
+        });
+        break;
+    }
   }
 
   render() {
@@ -42,16 +73,18 @@ class AppointmentsModalForm extends React.Component {
           floatingLabelText="Full Name"
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-          value={this.props.appointment.name || ''}
+          value={this.state.name}
           onChange={this.onChange}
+          name="tf_Name"
         />
         <br />
         <TextField
           floatingLabelText="Phone Number"
           floatingLabelStyle={styles.floatingLabelStyle}
           floatingLabelFocusStyle={styles.floatingLabelFocusStyle}
-          value={this.props.appointment.phoneNumber || ''}
+          value={this.state.phoneNumber}
           onChange={this.onChange}
+          name="tf_PhoneNumber"
         />
       </div>
     );

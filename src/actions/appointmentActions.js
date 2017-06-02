@@ -17,3 +17,10 @@ export function getAppointmentsById(appointmentId) {
     return dispatch({ type: Action.getAppointmentsByIdSuccess, appointmentId: appointmentId });
   };
 }
+
+export function updateAppointments(appointment) {
+    return function(dispatch) {
+      console.log('hit action updateAppointments: ', appointment);
+      return dispatch({ type: Action.updateAppointmentsSuccess, appointments: appointment });
+    };
+ }

@@ -34,7 +34,7 @@ class Modal extends React.Component {
   }
 
   onSubmit(evt){
-    console.log(this.refs.name.getValue);
+    //console.log(evt);
   }
 
   render() {
@@ -56,7 +56,7 @@ class Modal extends React.Component {
     switch(this.props.formName){
       case 'appointments':
         title = 'Schedule an appointment';
-        content = <AppointmentsModalForm appointmentId={this.props.modalId}/>;
+        content = <AppointmentsModalForm appointmentId={this.props.modalId} onSubmit={this.onSubmit}/>;
         break;
       default:
         title = 'Unexpected error';
