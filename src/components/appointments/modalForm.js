@@ -29,7 +29,7 @@ class AppointmentsModalForm extends React.Component {
   }
 
   componentDidMount(){
-    console.log('Mounting Form');
+    //console.log('Mounting Form');
     let self = this;
     self.props.actions.getAppointmentsById(self.props.appointmentId, self.props.appointments);
     setTimeout(function(){
@@ -45,12 +45,12 @@ class AppointmentsModalForm extends React.Component {
         phoneNumber: this.props.appointment.phoneNumber
       });
     } catch(ex){
-      console.log(ex);
+      //console.log(ex);
     }
   }
 
   onChange(evt, newValue){
-    console.log(newValue);
+    //console.log(newValue);
     let self = this;
     switch(evt.target.name){
       case 'tf_Name':

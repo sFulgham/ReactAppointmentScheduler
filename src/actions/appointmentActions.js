@@ -13,14 +13,14 @@ export function loadAllAppointments() {
 
 export function getAppointmentsById(appointmentId) {
   return function(dispatch) {
-    console.log('hit action getAppointmentsById: ' + appointmentId);
+    //console.log('hit action getAppointmentsById: ' + appointmentId);
     return dispatch({ type: Action.getAppointmentsByIdSuccess, appointmentId: appointmentId });
   };
 }
 
 export function updateAppointments(appointment) {
     return function(dispatch) {
-      console.log('hit action updateAppointments: ', appointment);
+      //console.log('hit action updateAppointments: ', appointment);
       return dispatch({ type: Action.updateAppointmentsSuccess, appointments: appointment });
     };
  }

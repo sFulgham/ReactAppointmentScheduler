@@ -30,13 +30,13 @@ class TimeScheduler extends React.Component {
   }
 
   componentDidMount(){
-    console.log('Mounting');
+    //console.log('Mounting');
     this.props.actions.loadAllAppointments();
   }
 
   openModal(evt){
     evt.preventDefault();
-    console.log('Open modal');
+    //console.log('Open modal');
   }
 
   render() {

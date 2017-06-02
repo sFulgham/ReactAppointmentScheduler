@@ -30,7 +30,7 @@ class Modal extends React.Component {
 
   onClose(){
     this.setState({open: false});
-    console.log(this.context);
+    //console.log(this.context);
   }
 
   onSubmit(evt){
@@ -48,7 +48,7 @@ class Modal extends React.Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={this.onSubmit}
+        onClick={this.onClose}
       />
     ];
 

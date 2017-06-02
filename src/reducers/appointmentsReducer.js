@@ -14,7 +14,7 @@ const intialState = {
 };
 
 export default function appointmentsReducer(state, action) {
-  console.log('hit reducer');
+  //console.log('hit reducer');
   let filteredAppointments = [], mappedAppointments = [];
 
   if(typeof state === 'undefined'){ //Guard clause
@@ -27,26 +27,20 @@ export default function appointmentsReducer(state, action) {
     });
   }
 
-  if(action.type === Action.updateAppointmentsSuccess){
-    mappedAppointments = state.appointmentTimes.map((appointment) => {
-      if(appointment.id === action.appointments.id){
-        return Object.assign({}, appointment, action.appointments);
-        //appointment.name = action.appointment.fullName;
-        //appointment.phoneNumber = action.appointment.phoneNumber;
-      }
-      return appointment;
-    });
-    debugger;
-    console.log('Mapped: ', mappedAppointments);
-  }
-
   switch(action.type) {
     case Action.loadAppointmentsSuccess:
       return Object.assign({}, state, action.appointments);
     case Action.getAppointmentsByIdSuccess:
       return Object.assign({}, state, filteredAppointments);
     case Action.updateAppointmentsSuccess:
-      return mappedAppointments;
+      state.appointmentTimes = state.appointmentTimes.map((appointment) => {
+        if(appointment.id === action.appointments.id){
+          return Object.assign({}, appointment, action.appointments);
+        }
+        //console.log('Mapped: ', state.appointmentTimes);
+        return appointment;
+      });
+      return Object.assign({}, state);
     default:
       return state;
   }
