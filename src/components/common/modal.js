@@ -20,7 +20,8 @@ class Modal extends React.Component {
     this.onClose = this.onClose.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.state = {
-      open: false
+      open: false,
+      submit: false
     };
   }
 
@@ -34,7 +35,12 @@ class Modal extends React.Component {
   }
 
   onSubmit(evt){
-    //console.log(evt);
+    evt.preventDefault();
+    let self = this;
+    self.setState({submit: true}, function(){
+      self.onClose();
+      self.setState({submit: false});
+    });
   }
 
   render() {
@@ -48,7 +54,7 @@ class Modal extends React.Component {
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onClick={this.onClose}
+        onClick={this.onSubmit}
       />
     ];
 
@@ -56,7 +62,7 @@ class Modal extends React.Component {
     switch(this.props.formName){
       case 'appointments':
         title = 'Schedule an appointment';
-        content = <AppointmentsModalForm appointmentId={this.props.modalId} onSubmit={this.onSubmit}/>;
+        content = <AppointmentsModalForm appointmentId={this.props.modalId} onSubmit={this.state.submit}/>;
         break;
       default:
         title = 'Unexpected error';

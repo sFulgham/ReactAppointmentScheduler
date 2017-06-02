@@ -27,6 +27,9 @@ class TimeScheduler extends React.Component {
   constructor(props, context){
     super(props, context);
     this.openModal = this.openModal.bind(this);
+    this.state = {
+      backgroundColor: 'none'
+    };
   }
 
   componentDidMount(){
@@ -39,22 +42,27 @@ class TimeScheduler extends React.Component {
     //console.log('Open modal');
   }
 
+  getStyles(appointment){
+    let activeStyle = '';
+    appointment.isActive ?
+      activeStyle = 'activeListItem':
+      activeStyle = '';
+    return activeStyle;
+  }
+
   render() {
     //const {appointments} = this.props;
     const mappedElements = this.props.appointments.map(appointment => {
-      let activeTime = {
-        backgroundColor: 'none'
-      };
-      appointment.isActive ?
-        activeTime['backgroundColor'] = '#E91E63':
-        activeTime['backgroundColor'] = 'none';
+      // let activeTime = {
+      //   backgroundColor: 'none'
+      // };
 
       return(
         <div key={appointment.id}>
           <ListItem
             primaryText={appointment.name}
             secondaryText={appointment.phoneNumber}
-            style={activeTime}>
+            className={this.getStyles(appointment)}>
             <div style={availableTimes}>
               {appointment.slot}
             </div>

@@ -33,12 +33,12 @@ export default function appointmentsReducer(state, action) {
     case Action.getAppointmentsByIdSuccess:
       return Object.assign({}, state, filteredAppointments);
     case Action.updateAppointmentsSuccess:
-      const newState = Object.assign({}, state);
+      var newState = Object.assign({}, state);
       newState.appointmentTimes = newState.appointmentTimes.map((appointment) => {
         if(appointment.id === action.appointments.id){
           (action.appointments.name !== '' || action.appointments.phoneNumber !== '') ?
-            appointment.isActive = true :
-            appointment.isActive = false;
+            action.appointments.isActive = true :
+            action.appointments.isActive = false;
           return Object.assign({}, appointment, action.appointments);
         }
         //console.log('Mapped: ', state.appointmentTimes);

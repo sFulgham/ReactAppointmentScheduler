@@ -28,6 +28,13 @@ class AppointmentsModalForm extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.onSubmit) {
+      console.log('Form submitted');
+      this.props.actions.updateAppointments(this.state);
+    }
+  }
+
   componentDidMount(){
     //console.log('Mounting Form');
     let self = this;
@@ -54,14 +61,10 @@ class AppointmentsModalForm extends React.Component {
     let self = this;
     switch(evt.target.name){
       case 'tf_Name':
-        self.setState({name: newValue}, function(){
-          self.props.actions.updateAppointments(self.state);
-        });
+        self.setState({name: newValue});
         break;
       case 'tf_PhoneNumber':
-        self.setState({phoneNumber: newValue}, function(){
-          self.props.actions.updateAppointments(self.state);
-        });
+        self.setState({phoneNumber: newValue});
         break;
     }
   }
