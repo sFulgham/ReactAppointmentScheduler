@@ -24,32 +24,37 @@ class AppointmentsModalForm extends React.Component {
     this.state = {
       id: 0,
       name: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      formSubmitted: false
     };
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if(nextProps.onSubmit) {
-      console.log('Form submitted');
-      this.props.actions.updateAppointments(this.state);
-    }
   }
 
   componentDidMount(){
     //console.log('Mounting Form');
     let self = this;
-    self.props.actions.getAppointmentsById(self.props.appointmentId, self.props.appointments);
+    let appointments = [];
+    self.props.appointment.length > 0 ?
+      appointments = self.props.appointment:
+      appointments = self.props.appointment.appointmentTimes;
+    self.props.actions.getAppointmentsById(self.props.appointmentId, appointments);
     setTimeout(function(){
       self.init();
     }, 650);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if(nextProps.onSubmit !== this.props.onSubmit){
+      nextProps.onClose();
+      nextProps.actions.updateAppointments(this.state);
+    }
+  }
+
   init(){
     try {
       this.setState({
-        id: this.props.appointment.id,
-        name: this.props.appointment.name,
-        phoneNumber: this.props.appointment.phoneNumber
+        id: this.props.appointment.appointment[0].id,
+        name: this.props.appointment.appointment[0].name,
+        phoneNumber: this.props.appointment.appointment[0].phoneNumber
       });
     } catch(ex){
       //console.log(ex);
@@ -96,7 +101,7 @@ class AppointmentsModalForm extends React.Component {
 
 function mapStateToProps(state, ownProps){
   return {
-    appointment: state.appointments[0]
+    appointment: state.appointments || state.appointments.appointment[0]
   };
 }
 

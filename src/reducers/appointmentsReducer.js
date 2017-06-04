@@ -1,39 +1,38 @@
 import Action from '../actions/actionTypes';
 /* eslint-disable no-console */
-const intialState = {
-  appointmentTimes: [
-    {id: 1, slot: '9am to 10am', isActive: false, name: '', phoneNumber: ''},
-    {id: 2, slot: '10am to 11am', isActive: false, name: '', phoneNumber: ''},
-    {id: 3, slot: '11am to 12pm', isActive: true, name: 'Steven Fulgham', phoneNumber: '678.333.3908'},
-    {id: 4, slot: '12pm to 1pm', isActive: false, name: '', phoneNumber: ''},
-    {id: 5, slot: '1pm to 2pm', isActive: false, name: '', phoneNumber: ''},
-    {id: 6, slot: '2pm to 3pm', isActive: false, name: '', phoneNumber: ''},
-    {id: 7, slot: '3pm to 4pm', isActive: false, name: '', phoneNumber: ''},
-    {id: 8, slot: '4pm to 5pm', isActive: false, name: '', phoneNumber: ''}
+let intialState = {
+  appointmentTimes: [ //mock data used for development
   ]
 };
 
 export default function appointmentsReducer(state, action) {
-  //console.log('hit reducer');
-  let filteredAppointments = [];
 
   if(typeof state === 'undefined'){ //Guard clause
     return intialState;
   }
 
-  if(action.type === Action.getAppointmentsByIdSuccess){
-    filteredAppointments = state.appointmentTimes.filter((appointment) => {
-      return appointment.id == action.appointmentId;
-    });
-  }
+  let data = action.appointmentTimes || state.appointmentTimes;
+  var newState = {};
 
   switch(action.type) {
     case Action.loadAppointmentsSuccess:
-      return Object.assign({}, state, action.appointments);
+      return data;
     case Action.getAppointmentsByIdSuccess:
-      return Object.assign({}, state, filteredAppointments);
+      if(state.hasOwnProperty('appointment')){
+        newState = Object.assign({}, state);
+        newState.appointment = newState.appointmentTimes.filter(function(appointment){
+          return newState.appointment[0].id == appointment.id;
+        });
+        return Object.assign({}, state, newState);
+      }
+      newState = Object.assign({}, state);
+      var appendSelectedAppointment = {appointment: action.appointment, appointmentTimes: []};
+      Object.keys(newState).forEach(function(key) {
+        appendSelectedAppointment.appointmentTimes.push(newState[key]);
+      });
+      return appendSelectedAppointment;
     case Action.updateAppointmentsSuccess:
-      var newState = Object.assign({}, state);
+      newState = Object.assign({}, state);
       newState.appointmentTimes = newState.appointmentTimes.map((appointment) => {
         if(appointment.id === action.appointments.id){
           (action.appointments.name !== '' || action.appointments.phoneNumber !== '') ?
@@ -41,7 +40,6 @@ export default function appointmentsReducer(state, action) {
             action.appointments.isActive = false;
           return Object.assign({}, appointment, action.appointments);
         }
-        //console.log('Mapped: ', state.appointmentTimes);
         return appointment;
       });
       return Object.assign({}, state, newState);

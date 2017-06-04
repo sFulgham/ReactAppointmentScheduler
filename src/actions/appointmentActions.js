@@ -1,4 +1,5 @@
 import Action from './actionTypes';
+import axios from 'axios';
 /* eslint-disable no-console */
 
 export function loadAllAppointmentsSuccess(appointments) {
@@ -7,20 +8,30 @@ export function loadAllAppointmentsSuccess(appointments) {
 
 export function loadAllAppointments() {
   return function(dispatch) {
-    return dispatch(loadAllAppointmentsSuccess());
+    axios.get('/api/getAppointments').then((res) => {
+      dispatch({type: Action.loadAppointmentsSuccess, appointmentTimes: res.data.appointmentTimes});
+    }).catch((err) => {
+      //console.log(err);
+      dispatch(loadAllAppointmentsSuccess());
+    });
+    //return dispatch(loadAllAppointmentsSuccess());
   };
 }
 
 export function getAppointmentsById(appointmentId) {
   return function(dispatch) {
-    //console.log('hit action getAppointmentsById: ' + appointmentId);
-    return dispatch({ type: Action.getAppointmentsByIdSuccess, appointmentId: appointmentId });
+    axios.get('/api/getAppointmentsById/' + appointmentId).then((res) => {
+      dispatch({type: Action.getAppointmentsByIdSuccess, appointment: res.data});
+    }).catch((err) => {
+      //console.log(err);
+      dispatch(loadAllAppointmentsSuccess());
+    });
+    //return dispatch({ type: Action.getAppointmentsByIdSuccess, appointmentId: appointmentId });
   };
 }
 
 export function updateAppointments(appointment) {
     return function(dispatch) {
-      //console.log('hit action updateAppointments: ', appointment);
       return dispatch({ type: Action.updateAppointmentsSuccess, appointments: appointment });
     };
  }
